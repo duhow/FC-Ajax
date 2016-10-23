@@ -1,11 +1,13 @@
 // ==UserScript==
+// @id           forocoches-ajax@duhow
 // @name         ForoCoches Ajax
 // @namespace    http://www.forocoches.com
-// @version      0.1.161002.2033
+// @version      0.1.161023.1531
 // @description  AJAX de foro y mejoras.
 // @author       duhow
 // @match        http://www.forocoches.com/foro/showthread.php*
 // @match        https://www.forocoches.com/foro/showthread.php*
+// @downloadURL  https://github.com/duhow/FC-Ajax/raw/master/forocoches.user.js
 // @grant        none
 // ==/UserScript==
 
