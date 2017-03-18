@@ -54,7 +54,7 @@
 
     var hposts = $("div#posts");
     hposts.empty();
-    hposts.append('<table id="posts-nuevos">');
+    hposts.append('<table id="posts-nuevos" style="width: 80%; min-width: 640px; margin: 0 auto;">');
     $.each(fposts, function(i, post){
         addpost(post, $("table#posts-nuevos"));
     });
