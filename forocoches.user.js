@@ -19,6 +19,7 @@
         if(!$(this).attr('id')){ return true; }
         var fecha = $.trim($(this).find("tr:eq(0) td:eq(0)").text());
         var mid = $.trim($(this).find("tr:eq(0) td:eq(1)").text()).substring(1);
+		var postid = $.trim($(this).attr('id'));
         var userid = $.trim($(this).find("tr:eq(1) td:eq(0) div:eq(0) a").attr('href')).replace("member.php?u=", "");
         var username = $.trim($(this).find("tr:eq(1) td:eq(0) div:eq(0) a").text());
         var useronline = $(this).find("tr:last-child td:first-child img").attr('src');
@@ -27,7 +28,8 @@
         var message = $.trim($(this).find("tr:eq(1) td:eq(1) div div").html());
 
         var post = {
-            'id': mid,
+			'id': postid,
+            'mid': mid,
             'date': fecha,
             'user': {
                 'id': userid,
@@ -52,7 +54,7 @@
         post.message = mhtml.html();
 
         var str = "";
-        str = str + '<tr data-message="' + post.id + '"><td style="min-width: 140px; vertical-align:top;">' + post.date + "</td>";
+        str = str + '<tr id="' + post.id + '" data-message="' + post.mid + '"><td style="min-width: 140px; vertical-align:top;">' + post.date + "</td>";
         str = str + '<td style="vertical-align:top;"><b style="' + (post.user.online ? "color: green" : "") + '" ' + (post.user.avatar ? 'data-avatar="' + post.user.avatar + '"' : '') +'>' + post.user.name + "</b></td>";
         str = str + '<td style="padding-left: 10px;">' + post.message + "</td>";
         str = str + "</tr>";
@@ -119,6 +121,7 @@
                 if(!$(this).attr('id')){ return true; }
                 var fecha = $.trim($(this).find("tr:eq(0) td:eq(0)").text());
                 var mid = $.trim($(this).find("tr:eq(0) td:eq(1)").text()).substring(1);
+				var postid = $.trim($(this).attr('id'));
                 var userid = $.trim($(this).find("tr:eq(1) td:eq(0) div:eq(0) a").attr('href')).replace("member.php?u=", "");
                 var username = $.trim($(this).find("tr:eq(1) td:eq(0) div:eq(0) a").text());
                 var useronline = $(this).find("tr:last-child td:first-child img").attr('src');
@@ -127,7 +130,8 @@
                 var message = $.trim($(this).find("tr:eq(1) td:eq(1)").html());
 
                 var post = {
-                    'id': mid,
+					'id': postid,
+                    'mid': mid,
                     'date': fecha,
                     'user': {
                         'id': userid,
