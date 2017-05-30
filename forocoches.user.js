@@ -2,7 +2,7 @@
 // @id           forocoches-ajax@duhow
 // @name         ForoCoches Ajax
 // @namespace    http://www.forocoches.com
-// @version      0.1.170318.1001
+// @version      0.1.170530.1429
 // @description  AJAX de foro y mejoras.
 // @author       duhow
 // @match        http://www.forocoches.com/foro/showthread.php*
@@ -41,6 +41,16 @@
     });
 
     function addpost(post, sel){
+        var mhtml = $("<div>" + post.message + "</div>");
+
+        $("div div.smallfont + table", mhtml).each(function(){
+            var txt = $("td", this).html();
+            var html = '<blockquote style="border-left: 10px solid grey; margin: 8px 0; padding-left: 15px;">' + txt + '</blockquote>';
+
+            $(this).parent().replaceWith(html);
+        });
+        post.message = mhtml.html();
+
         var str = "";
         str = str + '<tr data-message="' + post.id + '"><td style="min-width: 140px; vertical-align:top;">' + post.date + "</td>";
         str = str + '<td style="vertical-align:top;"><b style="' + (post.user.online ? "color: green" : "") + '" ' + (post.user.avatar ? 'data-avatar="' + post.user.avatar + '"' : '') +'>' + post.user.name + "</b></td>";
