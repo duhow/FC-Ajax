@@ -2,7 +2,7 @@
 // @id           forocoches-ajax@duhow
 // @name         ForoCoches Ajax
 // @namespace    http://www.forocoches.com
-// @version      0.1.170530.1429
+// @version      0.1.170602.0051
 // @description  AJAX de foro y mejoras.
 // @author       duhow
 // @match        http://www.forocoches.com/foro/showthread.php*
