@@ -110,7 +110,7 @@
 
 		$("div > div.smallfont + table", mhtml).each(function(){
 			var txt = $("td", this).html();
-			var html = '<blockquote style="border-left: 10px solid grey; margin: 8px 0; padding-left: 15px;">' + txt + '</blockquote>';
+			var html = '<blockquote style="border-left: 10px solid grey; margin: 8px 0; padding-left: 15px; word-wrap: break-word; display:block; max-height:410px; overflow:auto; ">' + txt + '</blockquote>';
 
 			$(this).parent().replaceWith(html); // Quitar cita:
 		});
