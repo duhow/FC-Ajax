@@ -2,7 +2,7 @@
 // @id           forocoches-ajax@duhow
 // @name         ForoCoches Ajax
 // @namespace    http://www.forocoches.com
-// @version      0.1.170602.0051
+// @version      0.1.170602.0058
 // @description  AJAX de foro y mejoras.
 // @author       duhow
 // @match        http://www.forocoches.com/foro/showthread.php*
@@ -125,6 +125,7 @@
 
 		$(sel).css("border-collapse", "collapse");
 		$(sel).find("tr:nth-child(even)").css("background", "#EEE");
+		$(sel).find("blockquote img").css("max-height", "300px");
 	}
 
 	function getnewpost(page){
