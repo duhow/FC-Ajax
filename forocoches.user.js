@@ -2,7 +2,7 @@
 // @id           forocoches-ajax@duhow
 // @name         ForoCoches Ajax
 // @namespace    http://www.forocoches.com
-// @version      0.1.170602.1110
+// @version      0.1.170602.1202
 // @description  AJAX de foro y mejoras.
 // @author       duhow
 // @match        http://www.forocoches.com/foro/showthread.php*
@@ -33,6 +33,11 @@
         addpost(post, $("table#posts-nuevos"));
     });
     hposts.append("</table>");
+
+	// Agregar cuadro de botones
+	// ----------------------
+
+	toolbox();
 
 	// Ver página actual
 	// ----------------------
@@ -168,5 +173,31 @@
 			return parseInt(page.substring(idx + 5));
 		}
 		return 1;
+	}
+
+	function toolbox(){
+		var html = '<div id="toolbox">'
+				+ '<ul style="list-style: none; margin: 0; padding: 0 5px;">'
+				// Create post
+				+ '<li style="float: left; font-size: 37px;">'
+					+ '<a href="newreply.php?do=newreply&t='+ threadid +'">'
+					+ '&#x270E;'
+					+ '</a></li>'
+				+ '<li style="float: left; font-size: 40px;">&#x25BC;</li>' // Ultimo
+				+ '</ul>';
+
+		html += '</div>';
+		html = $(html);
+		html
+			.css("width", "150px")
+			.css("height", "50px")
+			.css("background", "#222")
+			.css("color", "white")
+			.css("display", "inline-block")
+			.css("position", "fixed")
+			.css("bottom", "50px")
+			.css("right", "50px");
+
+		$("body").append(html);
 	}
 })();
