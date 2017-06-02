@@ -2,7 +2,7 @@
 // @id           forocoches-ajax@duhow
 // @name         ForoCoches Ajax
 // @namespace    http://www.forocoches.com
-// @version      0.1.170602.1848
+// @version      0.1.170602.2035
 // @description  AJAX de foro y mejoras.
 // @author       duhow
 // @match        *://www.forocoches.com/foro/showthread.php*
@@ -60,6 +60,26 @@
 	// ----------------------
 
 	toolbox();
+
+	// Remarcar post seleccionado.
+	// ----------------------
+
+	if(location.hash){
+		$(location.hash).css("background", "#BBE");
+
+		// Ir al comentario marcado en 0.5s
+		setTimeout(function(){
+			$('html, body').animate({
+		        scrollTop: $(location.hash).offset().top - 100
+		    }, 300);
+		}, 500);
+	}
+
+	$(document).on("click", "blockquote div b + a", function(e){
+		setTimeout(function(){
+			$(location.hash).css("background", "#BBE");
+		}, 50);
+	});
 
 	// Actualizar al hacer scroll hacia abajo
 	// ----------------------
@@ -147,6 +167,12 @@
 		var mhtml = $("<div>" + post.message + "</div>");
 
 		$("div > div.smallfont + table", mhtml).each(function(){
+
+			// Actualizar link para ir al mensaje.
+			var link = $("td div > b + a", this).attr('href');
+			link = link.substring(link.search("#"));
+			$("td div > b + a", this).attr('href', link);
+
 			var txt = $("td", this).html();
 			var html = '<blockquote style="border-left: 10px solid grey; margin: 8px 0; padding-left: 15px; word-wrap: break-word; display:block; max-height:410px; overflow:auto; ">' + txt + '</blockquote>';
 
