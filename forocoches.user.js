@@ -2,7 +2,7 @@
 // @id           forocoches-ajax@duhow
 // @name         ForoCoches Ajax
 // @namespace    http://www.forocoches.com
-// @version      0.1.170602.0058
+// @version      0.1.170602.1108
 // @description  AJAX de foro y mejoras.
 // @author       duhow
 // @match        http://www.forocoches.com/foro/showthread.php*
@@ -157,5 +157,14 @@
 
 			if(ret.indexOf("is_last_page = 1") > 0){ last_page = true; }
 		});
+	}
+
+	function getlastpage(){
+		var page = $("table tr[valign=top] td div.pagenav table tr td.alt1:last a").attr('href');
+		var idx = page.search("page");
+		if(idx > 0){
+			return parseInt(page.substring(idx + 5));
+		}
+		return 1;
 	}
 })();
