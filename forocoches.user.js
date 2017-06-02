@@ -78,13 +78,13 @@
         }
     });
 
-    $(".username").hover(function(e){
-        // TODO
-		console.log("hover!");
-		if($(this).data('avatar') == ""){ return true; }
-        $("body").append('<img src="' + $(this).data('avatar') +'" style="position:absolute; top:' + e.clientY + '; left:' + e.clientX + ';">');
-    }, function(e){
-		console.log("release!");
+    $(document).on("mouseenter", ".username", function(e){
+		if(typeof $(this).data('avatar') === 'undefined'){ return true; }
+        $(this).append('<img src="' + $(this).data('avatar') +'" style="position:fixed; top:' + e.clientY +"px" + '; left:' + e.clientX + "px" + ';">');
+	}).on("mousemove", ".username", function(e){
+		$(this).children("img").css("top", (e.clientY + 1) + "px").css("left", (e.clientX + 1) + "px");
+    }).on("mouseleave", ".username", function(e){
+		$(this).children("img").remove();
 	});
 
 	// Funciones generales
@@ -134,7 +134,7 @@
 
 		var str = "";
 		str = str + '<tr id="' + post.id + '" data-message="' + post.mid + '"><td style="min-width: 140px; vertical-align:top;">' + post.date + "</td>";
-		str = str + '<td style="vertical-align:top;"><b class="username" style="' + (post.user.online ? "color: green" : "") + '" ' + (post.user.avatar ? 'data-avatar="' + post.user.avatar + '"' : '') +'>' + post.user.name + "</b></td>";
+		str = str + '<td style="vertical-align:top;"><b class="username" style="cursor: default; ' + (post.user.online ? "color: green" : "") + '" ' + (post.user.avatar ? 'data-avatar="' + post.user.avatar + '"' : '') +'>' + post.user.name + "</b></td>";
 		str = str + '<td style="padding-left: 10px;">' + post.message + "</td>";
 		str = str + "</tr>";
 		sel.append(str);
