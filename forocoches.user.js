@@ -189,8 +189,10 @@
 
 			// Actualizar link para ir al mensaje.
 			var link = $("td div > b + a", this).attr('href');
-			link = link.substring(link.search("#"));
-			$("td div > b + a", this).attr('href', link);
+			if(typeof link != "undefined"){
+				if(link.search("#") > 0){ link = link.substring(link.search("#")); }
+				$("td div > b + a", this).attr('href', link);
+			}
 
 			var txt = $("td", this).html();
 			var html = '<blockquote style="border-left: 10px solid grey; margin: 8px 0; padding-left: 15px; word-wrap: break-word; display:block; max-height:410px; overflow:auto; ">' + txt + '</blockquote>';
