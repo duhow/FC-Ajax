@@ -78,14 +78,14 @@
         }
     });
 
-    $("[data-avatar]").hover(function(e){
+    $(".username").hover(function(e){
         // TODO
+		console.log("hover!");
+		if($(this).data('avatar') == ""){ return true; }
         $("body").append('<img src="' + $(this).data('avatar') +'" style="position:absolute; top:' + e.clientY + '; left:' + e.clientX + ';">');
-    });
-
-    $("[data-avatar]").mousemove(function(e){
-        // TODO
-    });
+    }, function(e){
+		console.log("release!");
+	});
 
 	// Funciones generales
 	// ----------------------
@@ -134,7 +134,7 @@
 
 		var str = "";
 		str = str + '<tr id="' + post.id + '" data-message="' + post.mid + '"><td style="min-width: 140px; vertical-align:top;">' + post.date + "</td>";
-		str = str + '<td style="vertical-align:top;"><b style="' + (post.user.online ? "color: green" : "") + '" ' + (post.user.avatar ? 'data-avatar="' + post.user.avatar + '"' : '') +'>' + post.user.name + "</b></td>";
+		str = str + '<td style="vertical-align:top;"><b class="username" style="' + (post.user.online ? "color: green" : "") + '" ' + (post.user.avatar ? 'data-avatar="' + post.user.avatar + '"' : '') +'>' + post.user.name + "</b></td>";
 		str = str + '<td style="padding-left: 10px;">' + post.message + "</td>";
 		str = str + "</tr>";
 		sel.append(str);
