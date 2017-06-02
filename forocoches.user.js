@@ -197,12 +197,21 @@
 	}
 
 	function getlastpage(){
-		var page = $("table tr[valign=top] td div.pagenav table tr td.alt1:last a").attr('href');
-		if(typeof page === 'undefined' || !page){ return 1; }
+		// smallfont -> ultimo
+		// next -> boton de siguiente
+		// mfont -> numero
 
-		var idx = page.search("page");
+		var pagenum = $("table tr[valign=top] td div.pagenav table tr td.alt1:last a");
+		if(pagenum.text() == ">"){
+			pagenum = $("table tr[valign=top] td div.pagenav table tr td:nth-last-child(3) a");
+		}
+
+		pagenum = pagenum.attr('href');
+		if(typeof pagenum === 'undefined' || !pagenum){ return 1; }
+
+		var idx = pagenum.search("page");
 		if(idx > 0){
-			return parseInt(page.substring(idx + 5));
+			return parseInt(pagenum.substring(idx + 5));
 		}
 		return 1;
 	}
