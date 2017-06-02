@@ -29,7 +29,7 @@
 	if(page < 1){ page = 1; }
 
     var tnewpost; // Timer load new post
-	var reportpost; // ID post a reportar
+	var selpost; // ID post seleccionado
 
 	var last_page = false;
 	if(typeof is_last_page != 'undefined'){
@@ -95,13 +95,14 @@
 		post.toggleClass("active");
 		if(post.hasClass("active")){
 			post.css("background", "#999");
-			reportpost = post.attr('id').substring(4);
+			selpost = post.attr('id').substring(4);
 		}else{
 			post.css("background", "#FFF");
-			reportpost = 0;
+			selpost = 0;
 		}
 
-		if(reportpost > 0){
+		if(selpost > 0){
+			mq_click(selpost);
 			$("#toolbox .report").css("color", "red").css("cursor", "pointer");
 		}else{
 			$("#toolbox .report").css("color", "white").css("cursor", "default");
@@ -252,8 +253,8 @@
 	});
 
 	$(document).on("click", "#toolbox .report", function(){
-		if(reportpost > 0){
-			window.location.href = "report.php?p=" + reportpost;
+		if(selpost > 0){
+			window.location.href = "report.php?p=" + selpost;
 		}
 	});
 })();
