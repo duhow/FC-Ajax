@@ -2,17 +2,38 @@
 // @id           forocoches-ajax@duhow
 // @name         ForoCoches Ajax
 // @namespace    http://www.forocoches.com
-// @version      0.1.170602.1636
+// @version      0.1.170602.1712
 // @description  AJAX de foro y mejoras.
 // @author       duhow
-// @match        http://www.forocoches.com/foro/showthread.php*
-// @match        https://www.forocoches.com/foro/showthread.php*
+// @match        *://www.forocoches.com/foro/showthread.php*
 // @downloadURL  https://github.com/duhow/FC-Ajax/raw/master/forocoches.user.js
 // @grant        none
+// @run-at       document-end
 // ==/UserScript==
 
 (function() {
     'use strict';
+
+	// Set variables generales
+	// ----------------------
+
+	// ID del post
+	if(typeof threadid == 'undefined'){
+		var threadid = parseInt( window.location.search.substring( window.location.search.search("t=") + 2 ) );
+	}
+
+	var page = 1; // Current page
+	if(window.location.search.search("page=") > 0){
+    	page = parseInt( window.location.search.substring( window.location.search.search("page=") + 5 ) );
+	}
+	if(page < 1){ page = 1; }
+
+    var tnewpost; // Timer load new post
+
+	var last_page = false;
+	if(typeof is_last_page != 'undefined'){
+		last_page = is_last_page; // HACK or false
+	}
 
 	// Cargar posts actuales
 	// ----------------------
@@ -37,23 +58,7 @@
 	// Agregar cuadro de botones
 	// ----------------------
 
-	if(typeof threadid == 'undefined'){
-		var threadid = parseInt( window.location.search.substring( window.location.search.search("t=") + 2 ) );
-	}
 	toolbox();
-
-	// Ver página actual
-	// ----------------------
-
-    var page = 1;
-    var s = $(location).attr('search');
-    if(s.indexOf("page") > 0){
-        page = parseInt(s.substring(s.indexOf("page") + 5));
-        if(page < 1){ page = 1; }
-    }
-
-    var tnewpost;
-    var last_page = is_last_page; // HACK or false
 
 	// Actualizar al hacer scroll hacia abajo
 	// ----------------------
@@ -81,6 +86,9 @@
     $("[data-avatar]").mousemove(function(e){
         // TODO
     });
+
+	// Funciones generales
+	// ----------------------
 
 	function parsepost(sel){
 		if(!$(sel).attr('id')){ return false; }
