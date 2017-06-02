@@ -2,7 +2,7 @@
 // @id           forocoches-ajax@duhow
 // @name         ForoCoches Ajax
 // @namespace    http://www.forocoches.com
-// @version      0.1.170602.2035
+// @version      0.1.170602.2104
 // @description  AJAX de foro y mejoras.
 // @author       duhow
 // @match        *://www.forocoches.com/foro/showthread.php*
@@ -30,6 +30,7 @@
 
     var tnewpost; // Timer load new post
 	var selpost; // ID post seleccionado
+	var editpost = false; // Si el post seleccionado es editable.
 
 	var last_page = false;
 	if(typeof is_last_page != 'undefined'){
@@ -121,6 +122,14 @@
 			selpost = 0;
 		}
 
+		if(post.data('editable')){
+			editpost = true;
+			$("#toolbox .writepost").css("color", "#BBB");
+		}else{
+			editpost = false;
+			$("#toolbox .writepost").css("color", "white");
+		}
+
 		if(selpost > 0){
 			mq_click(selpost);
 			$("#toolbox .report").css("color", "red").css("cursor", "pointer");
@@ -147,6 +156,15 @@
 			message = $.trim($(sel).find("tr:eq(1) td:eq(1)").html()); // For AJAX queries
 		}
 
+		var editable = false;
+		var buttons = $(sel).find("tr:last td.alt1 a");
+		$(buttons).each(function(i){
+			if($(this).attr('href').search("editpost") >= 0){
+				editable = true;
+				return false; // break
+			}
+		});
+
 		var post = {
 			'id': postid,
 			'mid': mid,
@@ -157,7 +175,8 @@
 				'name': username,
 				'online': useronline
 			},
-			'message': message
+			'message': message,
+			'editable': editable
 		};
 
 		return post;
@@ -181,7 +200,7 @@
 		post.message = mhtml.html();
 
 		var str = "";
-		str = str + '<tr id="' + post.id + '" data-message="' + post.mid + '"><td style="min-width: 140px; vertical-align:top;">' + post.date + "</td>";
+		str = str + '<tr id="' + post.id + '" data-message="' + post.mid + '" data-editable="'+ post.editable +'"><td style="min-width: 140px; vertical-align:top;">' + post.date + "</td>";
 		str = str + '<td style="vertical-align:top;"><b class="username" style="cursor: default; ' + (post.user.online ? "color: green" : "") + '" ' + (post.user.avatar ? 'data-avatar="' + post.user.avatar + '"' : '') +'>' + post.user.name + "</b></td>";
 		str = str + '<td style="padding-left: 10px;">' + post.message + "</td>";
 		str = str + "</tr>";
@@ -246,13 +265,9 @@
 	function toolbox(){
 		var html = '<div id="toolbox">'
 				+ '<ul style="list-style: none; margin: 0; padding: 0 5px;">'
-				// Create post
-				+ '<li style="float: left; font-size: 37px;">'
-					+ '<a style="color: white; text-decoration: none; cursor: pointer;" href="newreply.php?do=newreply&t='+ threadid +'">'
-					+ '&#x270E;'
-					+ '</a></li>'
-				+ '<li class="lastmessage" style="float: left; font-size: 40px; cursor: pointer;">&#x25BC;</li>' // Ultimo
-				+ '<li class="report" style="float: left; font-size: 40px; cursor: default;">&#x26A0;</li>' // Ultimo
+					+ '<li class="writepost" style="float: left; font-size: 37px; cursor: pointer;">&#x270E;</li>' // Crear - Editar post
+					+ '<li class="lastmessage" style="float: left; font-size: 40px; cursor: pointer;">&#x25BC;</li>' // Ultimo
+					+ '<li class="report" style="float: left; font-size: 40px; cursor: default;">&#x26A0;</li>' // Reportar
 				+ '</ul>';
 
 		html += '</div>';
@@ -269,6 +284,14 @@
 
 		$("body").append(html);
 	}
+
+	$(document).on("click", "#toolbox .writepost", function(){
+		if(editpost && selpost > 0){
+			location.href = 'editpost.php?do=editpost&p=' + selpost;
+		}else{
+			location.href = 'newreply.php?do=newreply&t=' + threadid;
+		}
+	});
 
 	$(document).on("click", "#toolbox .lastmessage", function(){
 		$("table#posts-nuevos").empty();
