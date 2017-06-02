@@ -37,6 +37,9 @@
 	// Agregar cuadro de botones
 	// ----------------------
 
+	if(typeof threadid == 'undefined'){
+		var threadid = parseInt( window.location.search.substring( window.location.search.search("t=") + 2 ) );
+	}
 	toolbox();
 
 	// Ver página actual
