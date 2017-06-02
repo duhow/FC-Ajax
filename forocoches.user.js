@@ -29,6 +29,7 @@
 	if(page < 1){ page = 1; }
 
     var tnewpost; // Timer load new post
+	var reportpost; // ID post a reportar
 
 	var last_page = false;
 	if(typeof is_last_page != 'undefined'){
@@ -85,6 +86,26 @@
 		$(this).children("img").css("top", (e.clientY + 1) + "px").css("left", (e.clientX + 1) + "px");
     }).on("mouseleave", ".username", function(e){
 		$(this).children("img").remove();
+	});
+
+	$(document).on("dblclick", "table#posts-nuevos tr td:not(:last-child)", function(e){
+		e.stopPropagation();
+
+		var post = $(this).parent();
+		post.toggleClass("active");
+		if(post.hasClass("active")){
+			post.css("background", "#999");
+			reportpost = post.attr('id').substring(4);
+		}else{
+			post.css("background", "#FFF");
+			reportpost = 0;
+		}
+
+		if(reportpost > 0){
+			$("#toolbox .report").css("color", "red").css("cursor", "pointer");
+		}else{
+			$("#toolbox .report").css("color", "white").css("cursor", "default");
+		}
 	});
 
 	// Funciones generales
@@ -144,9 +165,9 @@
 		$(sel).find("blockquote img").css("max-height", "300px");
 	}
 
-	function getnewpost(page){
+	function getnewpost(pagenum){
 		var posts = $("table#posts-nuevos");
-		var url = window.location.protocol + "//www.forocoches.com/foro/showthread.php?t=" + threadid + "&page=" + page;
+		var url = window.location.protocol + "//www.forocoches.com/foro/showthread.php?t=" + threadid + "&page=" + pagenum;
 		if(last_page){
 			console.log("Last page.");
 			return true;
@@ -155,7 +176,7 @@
 			url: url,
 			dataType: 'html'
 		}).done(function(ret){
-			console.log("Loading page " + page);
+			console.log("Loading page " + pagenum);
 			var html = $.parseHTML(ret);
 			var idx = 88;
 			$.each(html, function(i){
@@ -191,10 +212,11 @@
 				+ '<ul style="list-style: none; margin: 0; padding: 0 5px;">'
 				// Create post
 				+ '<li style="float: left; font-size: 37px;">'
-					+ '<a href="newreply.php?do=newreply&t='+ threadid +'">'
+					+ '<a style="color: white; text-decoration: none; cursor: pointer;" href="newreply.php?do=newreply&t='+ threadid +'">'
 					+ '&#x270E;'
 					+ '</a></li>'
-				+ '<li style="float: left; font-size: 40px;">&#x25BC;</li>' // Ultimo
+				+ '<li class="lastmessage" style="float: left; font-size: 40px; cursor: pointer;">&#x25BC;</li>' // Ultimo
+				+ '<li class="report" style="float: left; font-size: 40px; cursor: default;">&#x26A0;</li>' // Ultimo
 				+ '</ul>';
 
 		html += '</div>';
@@ -211,4 +233,18 @@
 
 		$("body").append(html);
 	}
+
+	$(document).on("click", "#toolbox .lastmessage", function(){
+		$("table#posts-nuevos").empty();
+		if(last_page){ last_page = false; } // Force refresh on click
+		page = getlastpage();
+		if(page == 1){ return false; }
+		getnewpost(page);
+	});
+
+	$(document).on("click", "#toolbox .report", function(){
+		if(reportpost > 0){
+			window.location.href = "report.php?p=" + reportpost;
+		}
+	});
 })();
